@@ -6,7 +6,11 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -33,6 +37,8 @@ public class MainActivity extends Activity {
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
 		phoneEditText = (EditText) findViewById(R.id.phoneEditText);
 		contactsListView = (ListView) findViewById(R.id.contactsListView);
+
+		registerForContextMenu(contactsListView);
 	}
 
 	@Override
@@ -79,5 +85,38 @@ public class MainActivity extends Activity {
 				Toast.makeText(this, "Name and Phone are required both!", Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		getMenuInflater().inflate(R.menu.update_delete_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+
+		switch (item.getItemId()) {
+
+		case R.id.action_update:
+
+			return true;
+
+		case R.id.action_delete:
+
+			dbHelper.deleteContact(adapter.getItem(info.position));
+			adapter.setData(dbHelper.getAllContacts());
+			adapter.notifyDataSetChanged();
+
+			return true;
+
+		default:
+			break;
+		}
+
+		return false;
 	}
 }

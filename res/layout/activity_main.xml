@@ -11,6 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:ems="10"
+        android:hint="@string/contact_name_hint"
         android:inputType="textPersonName" >
 
         <requestFocus />
@@ -24,6 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/nameEditText"
         android:ems="10"
+        android:hint="@string/contact_phone_hint"
         android:inputType="phone" />
 
     <Button
